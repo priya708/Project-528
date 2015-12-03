@@ -1,0 +1,1 @@
+CREATE TABLE output1 row format delimited fields terminated by ',' STORED AS RCFile AS select state, sum(Total_fees) AS Total_earning_from_Fees, sum(Other_Expenses) AS Total_earning_from_other from Final_table_1 GROUP BY state limit 50;
