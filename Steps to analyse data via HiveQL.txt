@@ -22,5 +22,13 @@ AS select institution_name,State, (drvef2013_total_enrollment * drvic2013_rv_tui
 (Living_Cost_on_Campus + Living_Cost_Off_Campus_Without_Family + Living_Cost_Off_Campus_With_Family) 
 AS Other_Expenses from fees;
 
-5.  Now your data is analysed and you can take out the total earnings from each state just by passing the below query in your ipython notebook through input.sql file. The output of it will be new table from where we can do simple select * from table_name and download all the data using HUE. this downloaded file will be used for visualization purpose of data.
+5. Query to analyze the reason for high revenue in top revenue generating states: 
+CREATE TABLE Institution_category ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS RCFILE AS SELECT Get_the_fees. unitid, enrollments_2013.institution_name, Get_the_fees.state, enrollments_2013.drvef2013_total_enrollment, enrollments_2013.hd2013_Institution_size_category from
+Get_the_fees JOIN enrollments_2013 on (Get_the_fees.institution_name = enrollments_2013.institution_name);
+Execute below query once above table is created:
+SELECT state, count(institution_name), hd2013_Institution_size_category from Institution_category
+GROUP BY state, HD2013_Institution_size_category;
+The result will give number of distinct institution categories in all the states and thus if the state have more number of institution falling under high fees category it will be more revenue generating state.
+
+6.  Now your data is analysed and you can take out the total earnings from each state just by passing the below query in your ipython notebook through input.sql file. The output of it will be new table from where we can do simple select * from table_name and download all the data using HUE. this downloaded file will be used for visualization purpose of data.
 select state, sum(Total_fees) AS Total_earning_from_Fees, sum(Other_Expenses) AS Total_Earning_from_Other from Final_table_1 GROUP BY state; --Run this in input.sql file in ipython notebook.
